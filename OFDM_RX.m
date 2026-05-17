@@ -1,7 +1,7 @@
 function [M_n,Threshold_graph,H_hat_time,RX_Payload_1_no_Equalizer,RX_Payload_2_no_Equalizer,RX_Payload_1_no_pilot,RX_Payload_2_no_pilot,BER] = OFDM_RX(RX,Parameters_struct)
 
     %% Debug mode
-    Debug_mode = 'on';
+    Debug_mode = 'off';
     if strcmp(Debug_mode,'on')
        clearvars -except Debug_mode; close all; clc;
        Parameters_struct = Global_Parameters;

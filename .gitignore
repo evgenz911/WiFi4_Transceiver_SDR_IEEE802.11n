@@ -1,3 +1,5 @@
 slprj/
 .DS_store
-TX_signal.*
+*.mat
+!RX*.mat
+!data_Payload_*.mat
