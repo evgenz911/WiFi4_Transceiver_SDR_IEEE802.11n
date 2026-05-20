@@ -1,13 +1,5 @@
 function [M_n,Threshold_graph,H_hat_time,RX_Payload_1_no_Equalizer,RX_Payload_2_no_Equalizer,RX_Payload_1_no_pilot,RX_Payload_2_no_pilot,BER] = OFDM_RX(RX,Parameters_struct)
 
-    %% Debug mode
-    Debug_mode = 'off';
-    if strcmp(Debug_mode,'on')
-       clearvars -except Debug_mode; close all; clc;
-       Parameters_struct = Global_Parameters;
-       load('RX.mat', 'RX');
-    end
-    
     %% RX channels separation
     RX_signal = RX(1,:); % [1x3500]
     RX_signal_2 = RX(2,:); % [1x3500]
@@ -153,41 +145,4 @@ function [M_n,Threshold_graph,H_hat_time,RX_Payload_1_no_Equalizer,RX_Payload_2_
     Error_bits = sum([abs(sign(Parameters_struct.data_Payload_1-RX_Payload_1_Final)),abs(sign(Parameters_struct.data_Payload_2-RX_Payload_2_Final))]);
     BER = Error_bits/(length(Parameters_struct.data_Payload_1)+length(Parameters_struct.data_Payload_2));
 
-    %% Plot
-    if strcmp(Debug_mode,'on')
-        subplot(2,4,1),plot(RX(1,:),'.');title('RX (Raw)');axis([-1.5 1.5 -1.5 1.5]); axis square;
-        
-        subplot(2,4,2),plot(real(RX(1,:)));title('In-phase');axis([1 3000 -1.5 1.5]); axis square;
-        subplot(2,4,3),plot(imag(RX(1,:)));title('Quadrature');axis([1 3000 -1.5 1.5]); axis square;
-        
-        [Spectrum_waveform,Welch_Spectrum_frequency] = pwelch(RX(1,:),[],[],[],1/Parameters_struct.Ts,'centered','power');
-        subplot(2,4,4),plot(Welch_Spectrum_frequency,pow2db(Spectrum_waveform));
-        title('Welch Power Spectral Density'); axis square;
-        
-        subplot(2,4,5),plot(1:length(M_n),M_n,1:length(M_n),Threshold_graph);title('Packet Detection');axis([1,length(M_n),0,1.2]); axis square;
-        subplot(2,4,6),plot(abs(H_hat_time(1,:)));
-        hold on;
-        subplot(2,4,6),plot(abs(H_hat_time(2,:)));
-        subplot(2,4,6),plot(abs(H_hat_time(3,:)));
-        subplot(2,4,6),plot(abs(H_hat_time(4,:)));
-        hold off;
-        title('Channel Estimation');
-        legend('H11','H12','H21','H22');xlabel('Time');
-        axis square;axis([1 64 0 5]);
-        
-        subplot(2,4,7),plot(RX_Payload_1_no_Equalizer,'*');
-        hold on
-        subplot(2,4,7),plot(RX_Payload_2_no_Equalizer,'*');
-        title('Before Equalizer');axis([-8 8 -8 8]);axis square;
-        hold off
-        
-        subplot(2,4,8),plot(RX_Payload_1_no_pilot,'*');
-        hold on
-        subplot(2,4,8),plot(RX_Payload_2_no_pilot,'*');
-        title({'Demodulation';['BER = ',num2str(BER)]});axis([-1.5 1.5 -1.5 1.5]);axis square;
-        hold off
-        set(gcf,'Units','centimeters','position',[1 2 49 24]);
-    end
-
-%% End function
 end
