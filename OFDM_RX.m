@@ -52,7 +52,7 @@ function [M_n,Threshold_graph,H_hat_time,RX_Payload_1_no_Equalizer,RX_Payload_2_
         end
     end
     Threshold_graph = Threshold*ones(1,length(M_n));
-    Threshold_graph(idx-1) = 1.15;
+    Threshold_graph(max(idx-1, 1)) = 1.15;
 
     %% Downsampling
 

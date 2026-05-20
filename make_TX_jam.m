@@ -33,11 +33,11 @@ function [TX_signal_jam, TX_signal_jam_2] = make_TX_jam(TX_signal, TX_signal_2, 
     % w2 = sqrt(Pn2/2) * (randn(1,N2) + 1j*randn(1,N2));
     
     % Harmonic noise
-    A1 = relAmp * rms(s1n);   % т.к. s1n уже rms=1, это ~= relAmp
-    A2 = relAmp * rms(s2n);
+    %A1 = relAmp * rms(s1n);   % т.к. s1n уже rms=1, это ~= relAmp
+    %A2 = relAmp * rms(s2n);
 
-    j1 = A1*exp(1j*(2*pi*f_jam*t1 + phi0));
-    j2 = A2*exp(1j*(2*pi*f_jam*t2 + phi0));
+    j1 = relAmp*exp(1j*(2*pi*f_jam*t1 + phi0));
+    j2 = relAmp*exp(1j*(2*pi*f_jam*t2 + phi0));
     
     % Final jammed signals
     TX_signal_jam   = s1 + j1;
